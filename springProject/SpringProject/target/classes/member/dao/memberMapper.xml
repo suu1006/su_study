@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!-- 복사떴당 -->
+ 
+ <mapper namespace = "memberSQL">  <!-- xml파일끼리 이름이 충돌나지 않게 namespace를 걸어주자! -->
+
+		<!-- 회원가입 -->
+		<insert id = "write" parameterType = "member"> <!--굳이 result타입 잡아주지 않아도됨  -->
+	 		
+	 		insert into member values (#{name}
+	 									, #{id}
+	 									, #{pwd}
+	 									, #{gender}
+	 									, #{email1}
+	 									, #{email2}
+	 									, #{tel1}
+	 									, #{tel2}
+	 									, #{tel3}
+	 									, #{zipcode}
+	 									, #{addr1}
+	 									, #{addr2}
+	 									, sysdate)
+	 	</insert>
+	 	
+		<!-- 로그인 -->
+	 	<select id = "login"  parameterType = "java.util.Map" resultType = "member"> <!--  parameterType = "String" -->
+	 		select * from member where id=  #{id} and pwd = #{pwd}
+	 			</select> 
+
+		<!-- 아이디 중복체크 -->
+		 <select id="checkId" parameterType="String" resultType="member">
+			  select * from member where id=#{id}
+			 	 </select>
+		
+		
+		
+		<select  id ="getMember"  parameterType = "String" resultType = "member">
+	 		select * from member where id =  #{id}
+	 	</select>
+
+		<!-- 수정 -->
+	 	<update  id ="update"  parameterType ="member">
+	 		UPDATE member SET name = #{name}
+								 , pwd = #{pwd}
+								 , gender = #{gender}
+								 , email1 = #{email1}
+								 , email2 = #{email2}
+								 , tel1 = #{tel1}
+								 , tel2 = #{tel2}
+								 , tel3 = #{tel3}
+								 , zipcode = #{zipcode}
+								 , addr1 = #{addr1}
+								 , addr2 = #{addr2} WHERE id = #{id}
+	 	</update>
+ </mapper>
+	 	

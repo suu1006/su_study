@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+ <mapper namespace="imageboardSQL">
+ 	<!-- 상품 등록 -->
+ 	<insert id = "imageboardWrite" parameterType = "imageboard">
+ 		insert into imageboard values(seq_imageboard.nextval
+ 									,#{imageId}
+ 									,#{imageName}
+ 									,#{imagePrice}
+ 									,#{imageQty} 
+ 									,#{imageContent}
+ 									,#{image1}
+ 									,sysdate)
+ 	</insert>
+ 	
+ 	<!-- 상품 목록 -->
+ 	<select id = "getImageboardList" parameterType="java.util.Map" resultType = "imageboard">
+ 			<![CDATA[
+	  		select * from 
+  			(select rownum rn,tt.* from 
+  			(select * from imageboard order by seq desc)tt) 
+  				where rn>= #{startNum} and rn<= #{endNum}
+	  		]]>
+ 	</select>
+ 	
+ 	<!-- 총글 수 -->
+ 	<select id="getImageboardTotalA" resultType="int">
+ 		select count(*) from imageboard
+ 	</select>
+ 	
+ 	<!-- 선택 삭제 -->
+ 	<delete id = "getImageboardDelete" parameterType="java.util.Map">
+ 		delete imageboard where seq in <!-- delete imageboard where seq in (2,3,6) >> seq가 2,3,6번인 물품 삭제 -->
+ 		<foreach collection="check" item="seq" open="(" close=")" separator=",">
+		#{seq} 	
+ 		</foreach>
+ 		<!-- check 라는 이름에 담아서 가져왔다.(2,3,6) -->
+ 	</delete>
+ </mapper>
